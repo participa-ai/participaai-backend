@@ -54,7 +54,7 @@ Participa ai! - Backend Repo
 
 -   Sucess Tag
 
-    ```json
+    ```
     {
         // Indica se a requisição foi executada com sucesso
         "sucess": true,
@@ -64,7 +64,7 @@ Participa ai! - Backend Repo
 
 -   Meta Section
 
-    ```json
+    ```
     {
         ...
         // Traz informações sobre a resposta, tipo de dados, paginação
@@ -88,7 +88,7 @@ Participa ai! - Backend Repo
 
 -   Data Section
 
-    ```json
+    ```
     {
         ...
         // A seção de dados retorna os dados em lista, ou objeto unico
@@ -116,7 +116,7 @@ Participa ai! - Backend Repo
 
 -   Successful Paginated Querying `GET`
 
-    ```json
+    ```
     > /api/v1/users?role=client&age[gt]=18&page=4&select=name&sort=name&limit=1
     > 200 OK
     {
@@ -144,7 +144,7 @@ Participa ai! - Backend Repo
     ```
 
 -   Successful normal `GET`
-    ```json
+    ```
     > /api/v1/users
     > 200 OK
     {
@@ -168,7 +168,7 @@ Participa ai! - Backend Repo
     ```
 -   Successful Single `GET`
 
-    ```json
+    ```
     > /api/v1/users/1234
     > 200 OK
     {
@@ -184,7 +184,7 @@ Participa ai! - Backend Repo
     ```
 
 -   Failed Single `GET`
-    ```json
+    ```
     > /api/v1/users/1236
     > 404 NOT FOUND
     {
@@ -198,7 +198,7 @@ Participa ai! - Backend Repo
     }
     ```
 -   Successful Create `POST`
-    ```json
+    ```
     > /api/v1/users/
     > 201 CREATED
     {
@@ -215,7 +215,7 @@ Participa ai! - Backend Repo
     ```
 -   Successful Update `PUT`
 
-    ```json
+    ```
     > /api/v1/users/1234
     > 200 OK
     {
@@ -232,7 +232,7 @@ Participa ai! - Backend Repo
     ```
 
 -   Successful `DELETE`
-    ```json
+    ```
     > /api/v1/users/1234
     > 200 OK
     {
