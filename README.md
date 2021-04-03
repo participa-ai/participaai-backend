@@ -4,7 +4,7 @@ Participa ai! - Backend Repo
 #### Padronização
 
 -   Padronização das rotas:
-    `<url>/api/users/:id/update-password`
+    `<url>/api/usuarios/:id/alterar-senha`
     -   restful
     -   "api" prefix
     -   plural
@@ -12,43 +12,43 @@ Participa ai! - Backend Repo
 
 #### Rotas
 
-    /auth
-        POST 	/signin
-        GET 	/signout
-        POST 	/signup
-        GET  	/me
-        POST 	/forgot-password
+    /autenticacao
+        POST 	/login
+        GET 	/logout
+        POST 	/cadastro
+        GET  	/eu
+        POST 	/esqueci-senha
 
-    /users/
+    /usuarios/
         GET 	/
         POST 	/
-        POST 	/filter
+        POST 	/filtrar
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
-        GET 	/:id/complaints
-        GET 	/complaints
-        POST 	/:id/update-password
-        POST 	/update-password
+        GET 	/:id/problemas
+        GET 	/problemas
+        POST 	/:id/alterar-senha
+        POST 	/alterar-senha
 
-    /complaint-categories
+    /categorias
         GET 	/
         POST 	/
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
 
-    /complaints
+    /problemas
         GET 	/
         POST 	/
-        POST 	/filter
+        POST 	/filtrar
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
-        POST 	/:id/answer
-        GET 	/:id/answer (?)
-        POST	/:id/images (?)
-        POST	/:id/answer/:id/images (?)
+        POST 	/:id/resposta
+
+    /dados-dashboard
+        GET     /
 
 #### Response Convention
 
@@ -96,17 +96,17 @@ Participa ai! - Backend Repo
         "data": [
             {
                 "_id": "1235",
-                "name": "ana teste"
+                "nome": "ana teste"
             },
             {
                 "_id": "1234",
-                "name": "bob teste"
+                "nome": "bob teste"
             }
         ]
         // ou object
         "data": {
             "_id": "1234",
-            "name": "bob teste"
+            "nome": "bob teste"
         }
 
     }
@@ -117,7 +117,7 @@ Participa ai! - Backend Repo
 -   Successful Paginated Querying `GET`
 
     ```
-    > /api/v1/users?role=client&age[gt]=18&page=4&select=name&sort=name&limit=1
+    > /api/users?tipo=cidadao&select=nome&sort=nome&page=4&limit=2
     > 200 OK
     {
         "sucess": true,
@@ -133,11 +133,11 @@ Participa ai! - Backend Repo
         "data": [
             {
                 "_id": "1235",
-                "name": "ana teste"
+                "nome": "ana teste"
             },
             {
                 "_id": "1234",
-                "name": "bob teste"
+                "nome": "bob teste"
             }
         ]
     }
@@ -145,7 +145,7 @@ Participa ai! - Backend Repo
 
 -   Successful normal `GET`
     ```
-    > /api/v1/users
+    > /api/usuarios
     > 200 OK
     {
         "sucess": true,
@@ -156,11 +156,11 @@ Participa ai! - Backend Repo
         "data|result": [
             {
                 "_id": "1235",
-                "name": "ana teste"
+                "nome": "ana teste"
             },
             {
                 "_id": "1234",
-                "name": "bob teste"
+                "nome": "bob teste"
             },
             ...
         ]
@@ -169,7 +169,7 @@ Participa ai! - Backend Repo
 -   Successful Single `GET`
 
     ```
-    > /api/v1/users/1234
+    > /api/usuarios/1234
     > 200 OK
     {
         "sucess": true,
@@ -178,14 +178,14 @@ Participa ai! - Backend Repo
         },
         "data": {
             "_id": "1234",
-            "name": "bob teste"
+            "nome": "bob teste"
         }
     }
     ```
 
 -   Failed Single `GET`
     ```
-    > /api/v1/users/1236
+    > /api/usuarios/1236
     > 404 NOT FOUND
     {
         "sucess": false,
@@ -199,7 +199,7 @@ Participa ai! - Backend Repo
     ```
 -   Successful Create `POST`
     ```
-    > /api/v1/users/
+    > /api/usuarios/
     > 201 CREATED
     {
         "sucess": true,
@@ -209,14 +209,14 @@ Participa ai! - Backend Repo
         // Retorna o objeto com os dados processados e o id criado
         "data": {
             "_id": "1234",
-            "name": "bob teste"
+            "nome": "bob teste"
         }
     }
     ```
 -   Successful Update `PUT`
 
     ```
-    > /api/v1/users/1234
+    > /api/usuarios/1234
     > 200 OK
     {
         "sucess": true,
@@ -226,14 +226,14 @@ Participa ai! - Backend Repo
         // Retorna o objeto com os dados atualizados
         "data": {
             "_id": "1234",
-            "name": "bob teste"
+            "nome": "bob teste"
         }
     }
     ```
 
 -   Successful `DELETE`
     ```
-    > /api/v1/users/1234
+    > /api/usuarios/1234
     > 200 OK
     {
         "sucess": true,
