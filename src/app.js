@@ -30,10 +30,10 @@ app.get('/_docs', async (request, response, next) => {
 });
 
 // Routes
-const apiRoot = `${process.env.API_PREFIX}${process.env.API_VERSION}`;
+const apiRoot = `${process.env.API_PREFIX}`;
 
-// const autenticacao = require('./api/routes/autenticacao');
-// app.use(`${apiRoot}/autenticacao`, autenticacao);
+const autenticacao = require('./api/routes/autenticacao');
+app.use(`${apiRoot}/autenticacao`, autenticacao);
 
 // const categorias = require('./api/routes/categorias');
 // app.use(`${apiRoot}/categorias`, categorias);

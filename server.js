@@ -1,10 +1,10 @@
-const app = require('./src/app');
 const setConfig = require('./src/config/config');
-const connectDB = require('./src/config/db');
-
 setConfig();
+
+const connectDB = require('./src/config/db');
 connectDB();
 
+const app = require('./src/app');
 const PORT = process.env.PORT || 5000;
 const server = app.listen(
     PORT,
