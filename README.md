@@ -1,7 +1,10 @@
 # participaai-backend
-Participa ai! - Backend Repo
+Participa ai! - Backend Repo :rocket:
 
-#### Padronização
+## :books: Documentação
+Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr8
+
+## :anchor: Padronização
 
 -   Padronização das rotas:
     `<url>/api/usuarios/:id/alterar-senha`
@@ -10,7 +13,7 @@ Participa ai! - Backend Repo
     -   plural
     -   spinal case
 
-#### Rotas
+## :construction: Rotas
 
     /autenticacao
         POST 	/login
@@ -242,5 +245,45 @@ Participa ai! - Backend Repo
         },
         // Retorno vazio
         "data": {}
+    }
+    ```
+
+-   Dashboard `GET`
+    ```
+    > /api/dados-dashboard
+    > 200 OK
+    {
+        "sucess": true,
+        "metadata": {
+            "type": "object"
+        },
+        "data": {
+            "totalDeProblemas": 69,
+            "problemasRespondidos": 42,
+            "problemasPorCategoria": [
+                {
+                    "categoria": "buracoNaVia",
+                    "quantidade": "2"
+                },
+                {
+                    "categoria": "posteQueimado",
+                    "quantidade": "1"
+                }
+            ],
+            "problemasPorDia": [
+                {
+                    "data": "2021-04-01",
+                    "quantidade": "50"
+                },
+                {
+                    "data": "2021-04-02",
+                    "quantidade": "1"
+                },
+                {
+                    "data": "2021-04-04",
+                    "quantidade": "2"
+                }
+            ]
+        }
     }
     ```
