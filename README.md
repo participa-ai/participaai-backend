@@ -1,5 +1,5 @@
-# participaai-backend
-Participa ai! - Backend Repo :rocket:
+# :rocket: participaai-backend
+Participa ai! - Backend Repo
 
 ## :books: Documentação
 Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr8
