@@ -3,16 +3,34 @@ const ErrorResponse = require('../../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const StatusCodes = require('http-status-codes');
 const Usuario = require('../../models/Usuario');
+const { validaCpf } = require('../../utils/services/helper');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
-        const { nome, email, cpf, matricula, senha, tipo } = request.body;
+        const { nome, email, cpf, senha, tipo } = request.body;
+
+        if (tipo != 'cidadao') {
+            return next(
+                new ErrorResponse(
+                    `Erro no cadastro, tipo não permitido.`,
+                    StatusCodes.BAD_REQUEST
+                )
+            );
+        }
+
+        if (!validaCpf(cpf)) {
+            return next(
+                new ErrorResponse(
+                    `Erro no cadastro, CPF inválido.`,
+                    StatusCodes.BAD_REQUEST
+                )
+            );
+        }
 
         const usuario = await Usuario.create({
             nome,
             email,
             cpf,
-            matricula,
             senha,
             tipo,
         });
@@ -21,10 +39,8 @@ class AutenticacaoController {
     });
 
     login = asyncHandler(async (request, response, next) => {
-        console.log(request.body);
         const { cpf, matricula, senha } = request.body;
 
-        console.log('1');
         if ((cpf && matricula) || !(cpf || matricula) || !senha) {
             return next(
                 new ErrorResponse(
@@ -34,14 +50,12 @@ class AutenticacaoController {
             );
         }
 
-        console.log('2');
         let usuario;
         if (cpf) {
             usuario = await Usuario.findOne({ cpf }).select('+senha');
         } else if (matricula) {
             usuario = await Usuario.findOne({ matricula }).select('+senha');
         }
-        console.log(usuario);
 
         if (!usuario) {
             return next(
