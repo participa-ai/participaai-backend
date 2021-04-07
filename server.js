@@ -1,3 +1,5 @@
+const colors = require('colors');
+
 const setConfig = require('./src/config/config');
 setConfig();
 

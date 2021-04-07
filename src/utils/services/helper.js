@@ -1,4 +1,4 @@
-exports.validaCpf() = (cpf) => {
+exports.validaCpf = (cpf) => {
     if (typeof cpf !== 'string') {
         return false;
     }
