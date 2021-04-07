@@ -17,7 +17,13 @@ const errorHandler = (error, request, response, next) => {
 
     // Mongoose duplicate key
     if (error.code === 11000) {
-        const message = 'Valor duplicado encontrado';
+        duplicatedField = error.message
+            .split(' index:')[1]
+            ?.split(' dup key')[0];
+        duplicatedField = duplicatedField
+            ?.substring(0, duplicatedField.lastIndexOf('_'))
+            .trim();
+        const message = `Valor duplicado encontrado: ${duplicatedField}`;
         handledError = new ErrorResponse(message, StatusCodes.BAD_REQUEST);
     }
 
@@ -31,7 +37,12 @@ const errorHandler = (error, request, response, next) => {
         .status(handledError.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
         .json({
             success: false,
-            handledError: handledError.message || `Erro Interno`,
+            metadata: {
+                type: 'error',
+            },
+            data: {
+                message: handledError.message || `Erro Interno`,
+            },
         });
 };
 

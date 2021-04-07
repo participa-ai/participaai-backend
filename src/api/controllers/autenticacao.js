@@ -84,6 +84,9 @@ class AutenticacaoController {
         const usuario = await Usuario.findById(request.usuario.id);
         return response.status(StatusCodes.OK).json({
             sucess: true,
+            metadata: {
+                type: 'object',
+            },
             data: usuario,
         });
     });
@@ -108,7 +111,12 @@ class AutenticacaoController {
             // .cookie('token', token, options)
             .json({
                 sucess: true,
-                token,
+                metadata: {
+                    type: 'object',
+                },
+                data: {
+                    token,
+                },
             });
     };
 
@@ -120,10 +128,18 @@ class AutenticacaoController {
             httpOnly: true,
         };
 
-        response.status(statusCode).cookie('token', token, options).json({
-            sucess: true,
-            token,
-        });
+        response
+            .status(statusCode)
+            .cookie('token', token, options)
+            .json({
+                sucess: true,
+                metadata: {
+                    type: 'object',
+                },
+                data: {
+                    token,
+                },
+            });
     };
 }
 

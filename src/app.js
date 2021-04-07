@@ -9,9 +9,10 @@ const app = express()
     .use(express.json())
     .use(cors())
     .use(cookieParser())
-    .use(express.static(path.join(__dirname, 'public')))
-    .use(errorHandler);
+    .use(express.static(path.join(__dirname, 'public')));
 
 loader(app);
+
+app.use(errorHandler);
 
 module.exports = app;
