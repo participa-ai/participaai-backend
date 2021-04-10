@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongooseDelete = require('mongoose-delete');
 
 const CategoriaSchema = new mongoose.Schema({
     nome: {
@@ -10,5 +11,7 @@ const CategoriaSchema = new mongoose.Schema({
         default: Date.now,
     },
 });
+
+CategoriaSchema.plugin(mongooseDelete, { deletedAt: true, indexFields: true });
 
 module.exports = mongoose.model('Categoria', CategoriaSchema, 'categorias');

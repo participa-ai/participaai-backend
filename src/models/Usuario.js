@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongooseDelete = require('mongoose-delete');
 
 const UsuarioSchema = new mongoose.Schema({
     nome: {
@@ -38,11 +39,9 @@ const UsuarioSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    deletado: {
-        type: Boolean,
-        default: false,
-    },
 });
+
+UsuarioSchema.plugin(mongooseDelete, { deletedAt: true, indexFields: true });
 
 UsuarioSchema.pre('save', async function (next) {
     if (!this.isModified('senha')) {

@@ -42,7 +42,7 @@ class CategoriaController {
     });
 
     delete = asyncHandler(async (request, response, next) => {
-        await Categoria.findByIdAndDelete(request.params.id);
+        await Categoria.deleteById(request.params.id);
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
     });
