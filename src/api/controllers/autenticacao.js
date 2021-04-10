@@ -8,16 +8,8 @@ const { validaCpf } = require('../../utils/helpers/userHelper');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
-        const { nome, email, cpf, senha, tipo } = request.body;
-
-        if (tipo != 'cidadao') {
-            return next(
-                new ErrorResponse(
-                    `Erro no cadastro, tipo não permitido.`,
-                    StatusCodes.BAD_REQUEST
-                )
-            );
-        }
+        const { nome, email, cpf, senha } = request.body;
+        const tipo = 'cidadao';
 
         if (!validaCpf(cpf)) {
             return next(
