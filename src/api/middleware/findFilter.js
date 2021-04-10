@@ -2,9 +2,16 @@ class FindFilter {
     filterByQuery = (model, populate) => async (request, response, next) => {
         let requestQuery = { ...request.query };
 
-        const paramsToRemove = ['select', 'sort', 'page', 'limit'];
-
+        const paramsToRemove = ['select', 'sort', 'page', 'limit', 'senha'];
         paramsToRemove.forEach((param) => delete requestQuery[param]);
+
+        if (!requestQuery.deleted) {
+            requestQuery.deleted = false;
+        } else {
+            if (requestQuery.deleted === 'any') {
+                delete requestQuery.deleted;
+            }
+        }
 
         let queryString = JSON.stringify(requestQuery);
         queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
@@ -14,7 +21,13 @@ class FindFilter {
 
         // Selecting
         if (request.query.select) {
-            const fields = request.query.select.split(',').join(' ');
+            const fields = request.query.select
+                .replace(',senha,', '')
+                .replace('senha,', '')
+                .replace(',senha', '')
+                .replace('senha', '')
+                .split(',')
+                .join(' ');
             query = query.select(fields);
         }
 
