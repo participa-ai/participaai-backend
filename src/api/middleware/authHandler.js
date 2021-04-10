@@ -46,7 +46,7 @@ exports.authorize = (...tipos) => {
         if (!tipos.includes(request.usuario.tipo)) {
             return next(
                 new ErrorResponse(
-                    `Usuario do tipo ${request.usuario.role} não autorizado a acessar esse recurso`,
+                    `Usuario do tipo ${request.usuario.tipo} não autorizado a acessar esse recurso`,
                     StatusCodes.FORBIDDEN
                 )
             );
