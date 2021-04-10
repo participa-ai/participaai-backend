@@ -4,7 +4,7 @@ class JsonResponse {
         this.metadata = {};
         this.data = data;
 
-        if (this.data?.isArray) {
+        if (Array.isArray(this.data)) {
             this.metadata.type = 'list';
             this.metadata.count = this.data.length;
         } else {
