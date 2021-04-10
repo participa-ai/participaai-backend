@@ -1,9 +1,10 @@
 const crypto = require('crypto');
-const ErrorResponse = require('../../utils/errorResponse');
+const ErrorResponse = require('../../utils/helpers/errorResponse');
+const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const StatusCodes = require('http-status-codes');
 const Usuario = require('../../models/Usuario');
-const { validaCpf } = require('../../utils/services/helper');
+const { validaCpf } = require('../../utils/helpers/userHelper');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
@@ -82,13 +83,8 @@ class AutenticacaoController {
 
     getEu = asyncHandler(async (request, response, next) => {
         const usuario = await Usuario.findById(request.usuario.id);
-        return response.status(StatusCodes.OK).json({
-            sucess: true,
-            metadata: {
-                type: 'object',
-            },
-            data: usuario,
-        });
+
+        return response.status(StatusCodes.OK).json(new JsonResponse(usuario));
     });
 
     logout = asyncHandler(async (request, response, next) => {
@@ -109,15 +105,7 @@ class AutenticacaoController {
         response
             .status(statusCode)
             // .cookie('token', token, options)
-            .json({
-                sucess: true,
-                metadata: {
-                    type: 'object',
-                },
-                data: {
-                    token,
-                },
-            });
+            .json(new JsonResponse({ token }));
     };
 
     clearTokenResponse = (statusCode, response) => {
@@ -131,15 +119,7 @@ class AutenticacaoController {
         response
             .status(statusCode)
             .cookie('token', token, options)
-            .json({
-                sucess: true,
-                metadata: {
-                    type: 'object',
-                },
-                data: {
-                    token,
-                },
-            });
+            .json(new JsonResponse({ token }));
     };
 }
 

@@ -1,11 +1,11 @@
+const JsonResponse = require('../../utils/helpers/jsonResponse');
+
 const router = require('express').Router();
 
 router.get('/_status', async (request, response, next) => {
-    response.status(200).send('Tudo ok por aqui!');
-});
-
-router.get('/_docs', async (request, response, next) => {
-    response.status(200).send('Nada aqui ainda.');
+    response
+        .status(200)
+        .json(new JsonResponse({ message: 'Tudo ok por aqui!' }));
 });
 
 module.exports = router;

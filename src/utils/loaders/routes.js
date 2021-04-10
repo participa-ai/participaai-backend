@@ -1,6 +1,9 @@
 module.exports = (app) => {
     const apiRoot = `${process.env.API_PREFIX}`;
 
+    const index = require('../../api/routes/index');
+    app.use(`${apiRoot}/`, index);
+
     const autenticacao = require('../../api/routes/autenticacao');
     app.use(`${apiRoot}/autenticacao`, autenticacao);
 

@@ -1,4 +1,4 @@
-const ErrorResponse = require('../../utils/errorResponse');
+const ErrorResponse = require('../../utils/helpers/errorResponse');
 const StatusCodes = require('http-status-codes');
 
 const errorHandler = (error, request, response, next) => {
