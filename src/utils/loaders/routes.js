@@ -7,8 +7,8 @@ module.exports = (app) => {
     const autenticacao = require('../../api/routes/autenticacao');
     app.use(`${apiRoot}/autenticacao`, autenticacao);
 
-    // const categorias = require('../../api/routes/categorias');
-    // app.use(`${apiRoot}/categorias`, categorias);
+    const categorias = require('../../api/routes/categorias');
+    app.use(`${apiRoot}/categorias`, categorias);
 
     // const problemas = require('../../api/routes/problemas');
     // app.use(`${apiRoot}/problemas`, problemas);
