@@ -13,8 +13,8 @@ module.exports = (app) => {
     // const problemas = require('../../api/routes/problemas');
     // app.use(`${apiRoot}/problemas`, problemas);
 
-    // const usuarios = require('../../api/routes/usuarios');
-    // app.use(`${apiRoot}/usuarios`, usuarios);
+    const usuarios = require('../../api/routes/usuarios');
+    app.use(`${apiRoot}/usuarios`, usuarios);
 
     // const dadosDashboard = require('../../api/routes/dadosDashboard');
     // app.use(`${apiRoot}/dados-dashboard`, dadosDashboard);
