@@ -83,6 +83,16 @@ class UsuariosController {
     });
 
     delete = asyncHandler(async (request, response, next) => {
+        let usuario = await Usuario.findById(request.params.id);
+        if (!usuario) {
+            return next(
+                new ErrorResponse(
+                    'Usuário não encontrado',
+                    StatusCodes.NOT_FOUND
+                )
+            );
+        }
+
         await Usuario.deleteById(request.params.id);
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
