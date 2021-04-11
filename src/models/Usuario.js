@@ -41,7 +41,12 @@ const UsuarioSchema = new mongoose.Schema({
     },
 });
 
-UsuarioSchema.plugin(mongooseDelete, { deletedAt: true, indexFields: true });
+UsuarioSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    indexFields: ['deleted'],
+});
+
+UsuarioSchema.index({ cpf: 1, matricula: 1, deletedAt: 1 }, { unique: true });
 
 UsuarioSchema.pre('save', async function (next) {
     if (!this.isModified('senha')) {
@@ -62,4 +67,7 @@ UsuarioSchema.methods.matchPassword = async function (senhaEnviada) {
     return await bcrypt.compare(senhaEnviada, this.senha);
 };
 
-module.exports = mongoose.model('Usuario', UsuarioSchema, 'usuarios');
+const model = mongoose.model('Usuario', UsuarioSchema, 'usuarios');
+model.syncIndexes();
+
+module.exports = model;
