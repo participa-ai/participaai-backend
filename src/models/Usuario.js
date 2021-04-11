@@ -44,6 +44,7 @@ const UsuarioSchema = new mongoose.Schema({
 UsuarioSchema.plugin(mongooseDelete, {
     deletedAt: true,
     indexFields: ['deleted'],
+    overrideMethods: true,
 });
 
 UsuarioSchema.index({ cpf: 1, matricula: 1, deletedAt: 1 }, { unique: true });

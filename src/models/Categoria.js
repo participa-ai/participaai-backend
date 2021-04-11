@@ -12,6 +12,10 @@ const CategoriaSchema = new mongoose.Schema({
     },
 });
 
-CategoriaSchema.plugin(mongooseDelete, { deletedAt: true, indexFields: true });
+CategoriaSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    indexFields: true,
+    overrideMethods: true,
+});
 
 module.exports = mongoose.model('Categoria', CategoriaSchema, 'categorias');

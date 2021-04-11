@@ -2,10 +2,15 @@ class FindFilter {
     filterByQuery = (model, populate) => async (request, response, next) => {
         let requestQuery = { ...request.query };
 
-        const paramsToRemove = ['select', 'sort', 'page', 'limit', 'senha'];
+        const paramsToRemove = [
+            'select',
+            'sort',
+            'page',
+            'limit',
+            'senha',
+            'deleted',
+        ];
         paramsToRemove.forEach((param) => delete requestQuery[param]);
-
-        requestQuery.deleted = false;
 
         let queryString = JSON.stringify(requestQuery);
         queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, (match) => `$${match}`);
@@ -16,10 +21,7 @@ class FindFilter {
         // Selecting
         if (request.query.select) {
             const fields = request.query.select
-                .replace(',senha,', '')
-                .replace('senha,', '')
-                .replace(',senha', '')
-                .replace('senha', '')
+                .replace(/\b(senha,|,?senha)\b/g, '')
                 .split(',')
                 .join(' ');
             query = query.select(fields);
@@ -38,7 +40,7 @@ class FindFilter {
         const limit = parseInt(request.query.limit, 10);
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-        const total = await model.countDocuments({ deleted: false });
+        const total = await model.countDocuments();
 
         if (request.query.limit) {
             query = query.skip(startIndex).limit(limit);
