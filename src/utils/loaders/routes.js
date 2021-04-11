@@ -1,21 +1,19 @@
 module.exports = (app) => {
-    const apiRoot = `${process.env.API_PREFIX}`;
-
     const index = require('../../api/routes/index');
-    app.use(`${apiRoot}/`, index);
+    app.use(`/api/`, index);
 
     const autenticacao = require('../../api/routes/autenticacao');
-    app.use(`${apiRoot}/autenticacao`, autenticacao);
+    app.use(`/api/autenticacao`, autenticacao);
 
     const categorias = require('../../api/routes/categorias');
-    app.use(`${apiRoot}/categorias`, categorias);
+    app.use(`/api/categorias`, categorias);
 
     // const problemas = require('../../api/routes/problemas');
-    // app.use(`${apiRoot}/problemas`, problemas);
+    // app.use(`/api/problemas`, problemas);
 
     const usuarios = require('../../api/routes/usuarios');
-    app.use(`${apiRoot}/usuarios`, usuarios);
+    app.use(`/api/usuarios`, usuarios);
 
     // const dadosDashboard = require('../../api/routes/dadosDashboard');
-    // app.use(`${apiRoot}/dados-dashboard`, dadosDashboard);
+    // app.use(`/api/dados-dashboard`, dadosDashboard);
 };
