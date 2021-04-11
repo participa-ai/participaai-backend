@@ -4,14 +4,14 @@ const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const StatusCodes = require('http-status-codes');
 const Usuario = require('../../models/Usuario');
-const { validaCpf } = require('../../utils/helpers/userHelper');
+const { validateCpf } = require('../../utils/helpers/userHelper');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
         const { nome, email, cpf, senha } = request.body;
         const tipo = 'cidadao';
 
-        if (!validaCpf(cpf)) {
+        if (!validateCpf(cpf)) {
             return next(
                 new ErrorResponse(
                     `Erro no cadastro, CPF inválido.`,

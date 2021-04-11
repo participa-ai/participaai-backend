@@ -1,4 +1,4 @@
-exports.validaCpf = (cpf) => {
+exports.validateCpf = (cpf) => {
     if (typeof cpf !== 'string') {
         return false;
     }
@@ -43,4 +43,91 @@ exports.validaCpf = (cpf) => {
     }
 
     return true;
+};
+
+exports.getUsuarioDto = (request) => {
+    const { nome, email, senha, tipo, cpf, matricula } = request.body;
+    let usuario = {};
+
+    if (nome) usuario.nome = nome;
+    if (email) usuario.email = email;
+    if (senha) usuario.senha = senha;
+    if (tipo) usuario.tipo = tipo;
+
+    if (tipo === 'admin') {
+        if (matricula) usuario.matricula = matricula;
+    } else if (tipo === 'cidadao') {
+        if (cpf) usuario.cpf = cpf;
+    }
+
+    return usuario;
+};
+
+exports.validateInsert = (usuarioDto) => {
+    let emptyFields = new Array();
+    let invalidFields = new Array();
+
+    if (!usuarioDto.nome) {
+        emptyFields.push('nome');
+    }
+
+    if (!usuarioDto.email) {
+        emptyFields.push('email');
+    }
+
+    if (!usuarioDto.senha) {
+        emptyFields.push('senha');
+    }
+
+    if (!usuarioDto.tipo) {
+        emptyFields.push('tipo');
+    }
+
+    if (usuarioDto.tipo === 'admin') {
+        delete usuarioDto.cpf;
+        if (!usuarioDto.matricula) {
+            emptyFields.push('matricula');
+        }
+    }
+
+    if (usuarioDto.tipo === 'cidadao') {
+        delete usuarioDto.matricula;
+        if (!usuarioDto.cpf) {
+            emptyFields.push('cpf');
+        } else if (!this.validateCpf(usuarioDto.cpf)) {
+            invalidFields.push('cpf');
+        }
+    }
+
+    if (emptyFields.length > 0) {
+        return `Os seguintes campos devem ser preenchidos: ${emptyFields.toString()}.`;
+    }
+
+    if (invalidFields.length > 0) {
+        return `Campos inválidos: ${invalidFields.toString()}`;
+    }
+
+    return '';
+};
+
+exports.validateUpdate = (usuarioDto, usuario) => {
+    delete usuarioDto.senha;
+
+    if (usuario.tipo === 'admin') {
+        delete usuarioDto.cpf;
+    }
+
+    if (usuario.tipo === 'cidadao') {
+        delete usuarioDto.matricula;
+        if (usuarioDto.cpf && !this.validateCpf(usuarioDto.cpf))
+            return 'Campos inválidos: cpf';
+    }
+
+    if (usuarioDto.tipo && usuarioDto.tipo !== usuario.tipo) {
+        return 'Não é possível alterar o tipo do usuário.';
+    } else {
+        delete usuarioDto.tipo;
+    }
+
+    return '';
 };
