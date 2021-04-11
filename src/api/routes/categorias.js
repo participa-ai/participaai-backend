@@ -7,17 +7,16 @@ const { protect, authorize } = require('../middleware/authHandler');
 const router = express.Router();
 
 router.use(protect);
-router.use(authorize('admin'));
 
 router
     .route('/')
     .get(findFilter.filterByQuery(Categoria), categoriasController.list)
-    .post(categoriasController.insert);
+    .post(authorize('admin'), categoriasController.insert);
 
 router
     .route('/:id')
     .get(categoriasController.get)
-    .put(categoriasController.update)
-    .delete(categoriasController.delete);
+    .put(authorize('admin'), categoriasController.update)
+    .delete(authorize('admin'), categoriasController.delete);
 
 module.exports = router;
