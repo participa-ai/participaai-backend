@@ -20,6 +20,4 @@ router
     .put(usuariosController.update)
     .delete(usuariosController.delete);
 
-router.route('/:id/alterar-senha').post(usuariosController.alterarSenha);
-
 module.exports = router;

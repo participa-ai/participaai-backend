@@ -97,17 +97,6 @@ class UsuariosController {
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
     });
-
-    alterarSenha = asyncHandler(async (request, response, next) => {
-        const usuario = await getUsuario(request, next);
-
-        const { senha } = request.body;
-
-        usuario.senha = senha;
-        await usuario.save();
-
-        response.status(StatusCodes.OK).json(new JsonResponse(usuario));
-    });
 }
 
 module.exports = new UsuariosController();

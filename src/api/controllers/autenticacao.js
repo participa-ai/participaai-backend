@@ -83,6 +83,29 @@ class AutenticacaoController {
         this.clearTokenResponse(StatusCodes.OK, response);
     });
 
+    alterarSenha = asyncHandler(async (request, response, next) => {
+        const { senhaAtual, senhaNova } = request.body;
+
+        const usuario = await Usuario.findById(request.usuario.id).select(
+            '+senha'
+        );
+
+        const isMatch = await usuario.matchPassword(senha);
+        if (!isMatch) {
+            return next(
+                new ErrorResponse(
+                    `Senha atual inválida`,
+                    StatusCodes.BAD_REQUEST
+                )
+            );
+        }
+
+        usuario.senha = senhaNova;
+        await usuario.save();
+
+        response.status(StatusCodes.OK).json(new JsonResponse(usuario));
+    });
+
     sendTokenResponse = (usuario, statusCode, response) => {
         const token = usuario.getSignedJwtToken();
 
