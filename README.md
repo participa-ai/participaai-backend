@@ -33,7 +33,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         DELETE 	/:id
         GET 	/:id
         GET 	/:id/problemas
-        GET 	/problemas
+        GET 	/eu/problemas
         POST 	/:id/alterar-senha
 
     /categorias
