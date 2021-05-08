@@ -10,14 +10,34 @@ const {
 
 class ProblemaController {
     list = asyncHandler(async (request, response, next) => {
-        response
-            .status(StatusCodes.OK)
-            .json(
-                new JsonResponse(
-                    response.filterResults.data,
-                    response.filterResults.pagination
-                )
-            );
+        let usuarioId;
+
+        if (request.params.usuarioId) usuarioId = request.params.usuarioId;
+        else if (request.baseUrl.includes('usuarios/eu'))
+            usuarioId = request.usuario.id;
+
+        if (usuarioId) {
+            let query = Problema.find({
+                usuario: usuarioId,
+            });
+
+            query = query.populate('categoria');
+
+            const problemas = await query;
+
+            return response
+                .status(StatusCodes.OK)
+                .json(new JsonResponse(problemas));
+        } else {
+            return response
+                .status(StatusCodes.OK)
+                .json(
+                    new JsonResponse(
+                        response.filterResults.data,
+                        response.filterResults.pagination
+                    )
+                );
+        }
     });
 
     get = asyncHandler(async (request, response, next) => {

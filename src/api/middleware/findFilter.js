@@ -1,5 +1,9 @@
 class FindFilter {
-    filterByQuery = (model, populate) => async (request, response, next) => {
+    filterByQuery = (model, populateArray) => async (
+        request,
+        response,
+        next
+    ) => {
         let requestQuery = { ...request.query };
 
         const paramsToRemove = [
@@ -46,8 +50,12 @@ class FindFilter {
             query = query.skip(startIndex).limit(limit);
         }
 
-        if (populate) {
-            query = query.populate(populate);
+        if (populateArray) {
+            for (let populate in populateArray) {
+                if (populateArray[populate]) {
+                    query = query.populate(populateArray[populate]);
+                }
+            }
         }
 
         // Query execution

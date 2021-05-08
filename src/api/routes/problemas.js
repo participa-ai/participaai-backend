@@ -4,13 +4,16 @@ const findFilter = require('../middleware/findFilter');
 const Problema = require('../../models/Problema');
 const { protect, authorize } = require('../middleware/authHandler');
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.use(protect);
 
 router
     .route('/')
-    .get(findFilter.filterByQuery(Problema), problemasController.list)
+    .get(
+        findFilter.filterByQuery(Problema, ['categoria', 'usuario']),
+        problemasController.list
+    )
     .post(problemasController.insert);
 
 router
