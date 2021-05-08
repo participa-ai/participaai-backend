@@ -23,6 +23,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         POST 	/cadastro
         GET  	/eu
         POST 	/esqueci-senha
+        POST 	/alterar-senha
 
     /usuarios/
         GET 	/
@@ -34,7 +35,6 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         GET 	/:id/problemas
         GET 	/problemas
         POST 	/:id/alterar-senha
-        POST 	/alterar-senha
 
     /categorias
         GET 	/
