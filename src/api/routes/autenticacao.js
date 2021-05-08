@@ -8,6 +8,6 @@ router.get('/eu', protect, autenticacaoController.getEu);
 router.post('/cadastro', autenticacaoController.cadastro);
 router.post('/login', autenticacaoController.login);
 router.get('/logout', autenticacaoController.logout);
-router.post('/alterar-senha', autenticacaoController.alterarSenha);
+router.post('/alterar-senha', protect, autenticacaoController.alterarSenha);
 
 module.exports = router;

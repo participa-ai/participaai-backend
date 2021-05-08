@@ -90,7 +90,7 @@ class AutenticacaoController {
             '+senha'
         );
 
-        const isMatch = await usuario.matchPassword(senha);
+        const isMatch = await usuario.matchPassword(senhaAtual);
         if (!isMatch) {
             return next(
                 new ErrorResponse(
@@ -103,7 +103,7 @@ class AutenticacaoController {
         usuario.senha = senhaNova;
         await usuario.save();
 
-        response.status(StatusCodes.OK).json(new JsonResponse(usuario));
+        this.clearTokenResponse(StatusCodes.OK, response);
     });
 
     sendTokenResponse = (usuario, statusCode, response) => {
