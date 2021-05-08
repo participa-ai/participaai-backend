@@ -14,6 +14,6 @@ module.exports = (app) => {
     const usuarios = require('../../api/routes/usuarios');
     app.use(`/api/usuarios`, usuarios);
 
-    // const dadosDashboard = require('../../api/routes/dashboard');
-    // app.use(`/api/dados-dashboard`, dadosDashboard);
+    const dadosDashboard = require('../../api/routes/dashboard');
+    app.use(`/api/dados-dashboard`, dadosDashboard);
 };

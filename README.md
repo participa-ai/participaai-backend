@@ -1,7 +1,9 @@
 # :rocket: participaai-backend
+
 Participa ai! - Backend Repo
 
 ## :books: Documentação
+
 Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr8
 
 ## :anchor: Padronização
@@ -235,6 +237,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     ```
 
 -   Successful `DELETE`
+
     ```
     > /api/usuarios/1234
     > 200 OK
@@ -262,25 +265,25 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
             "problemasRespondidos": 42,
             "problemasPorCategoria": [
                 {
-                    "categoria": "buracoNaVia",
+                    "_id_": "buracoNaVia",
                     "quantidade": "2"
                 },
                 {
-                    "categoria": "posteQueimado",
+                    "_id_": "posteQueimado",
                     "quantidade": "1"
                 }
             ],
             "problemasPorDia": [
                 {
-                    "data": "2021-04-01",
+                    "_id_": "2021-04-01",
                     "quantidade": "50"
                 },
                 {
-                    "data": "2021-04-02",
+                    "_id_": "2021-04-02",
                     "quantidade": "1"
                 },
                 {
-                    "data": "2021-04-04",
+                    "_id_": "2021-04-04",
                     "quantidade": "2"
                 }
             ]
