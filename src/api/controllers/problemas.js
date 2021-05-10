@@ -55,10 +55,19 @@ class ProblemaController {
     });
 
     insert = asyncHandler(async (request, response, next) => {
-        const problemaDto = getProblemaDtoForInsert(request);
-        const problema = await Problema.create(problemaDto);
+        request.body = JSON.parse(request.body.bodyJson);
+        let problemaDto = getProblemaDtoForInsert(request);
 
-        // TODO : ENVIAR IMAGEM E GUARDAR A URL
+        if (request.file) {
+            const { nome, uri } = this.getFileInfo(request.file);
+
+            problemaDto.foto = {
+                nome,
+                uri,
+            };
+        }
+
+        const problema = await Problema.create(problemaDto);
 
         response.status(StatusCodes.CREATED).json(new JsonResponse(problema));
     });
@@ -105,6 +114,23 @@ class ProblemaController {
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
     });
+
+    getFileInfo = (file) => {
+        const storageType = process.env.FILE_STORAGE_TYPE ?? 'local';
+        let fileInfo = { nome: '', uri: '' };
+
+        if (storageType === 'local') {
+            fileInfo.nome = file.filename;
+            fileInfo.uri = file.destination;
+        }
+
+        if (storageType === 's3') {
+            fileInfo.nome = file.originalname;
+            fileInfo.uri = file.location;
+        }
+
+        return fileInfo;
+    };
 }
 
 module.exports = new ProblemaController();

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const mongooseDelete = require('mongoose-delete');
 
-const CategoriaSchema = new mongoose.Schema({
+const ProblemaSchema = new mongoose.Schema({
     usuario: {
         type: mongoose.Schema.ObjectId,
         ref: 'Usuario',
@@ -50,10 +50,16 @@ const CategoriaSchema = new mongoose.Schema({
     },
 });
 
-CategoriaSchema.plugin(mongooseDelete, {
+ProblemaSchema.plugin(mongooseDelete, {
     deletedAt: true,
     indexFields: true,
     overrideMethods: true,
 });
 
-module.exports = mongoose.model('Problema', CategoriaSchema, 'problemas');
+ProblemaSchema.pre('save', function () {
+    if (!this.foto.uri) {
+        this.url = `${process.env.APP_URL}:${process.env.PORT}`;
+    }
+});
+
+module.exports = mongoose.model('Problema', ProblemaSchema, 'problemas');

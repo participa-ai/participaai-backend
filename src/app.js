@@ -19,6 +19,7 @@ const limiter = rateLimit({
 
 const app = express()
     .use(express.json())
+    .use(express.urlencoded({ extended: true }))
     .use(cors())
     .use(cookieParser())
     .use(mongoSanitize())
@@ -26,6 +27,10 @@ const app = express()
     .use(xss())
     .use(hpp())
     .use(limiter)
+    .use(
+        '/files',
+        express.static(path.resolve(__dirname, '..', 'public', 'uploads'))
+    )
     .use(express.static(path.join(__dirname, 'public')));
 
 loader(app);

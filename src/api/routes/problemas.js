@@ -1,7 +1,10 @@
 const express = require('express');
+const multer = require('multer');
+
+const multerConfig = require('../../config/multer');
+const Problema = require('../../models/Problema');
 const problemasController = require('../controllers/problemas');
 const findFilter = require('../middleware/findFilter');
-const Problema = require('../../models/Problema');
 const { protect, authorize } = require('../middleware/authHandler');
 
 const router = express.Router({ mergeParams: true });
@@ -14,7 +17,7 @@ router
         findFilter.filterByQuery(Problema, ['categoria', 'usuario']),
         problemasController.list
     )
-    .post(problemasController.insert);
+    .post(multer(multerConfig).single('foto'), problemasController.insert);
 
 router
     .route('/:id')
