@@ -7,7 +7,12 @@ const router = express.Router();
 router.get('/eu', protect, autenticacaoController.getEu);
 router.post('/cadastro', autenticacaoController.cadastro);
 router.post('/login', autenticacaoController.login);
-router.get('/logout', autenticacaoController.logout);
+router.get('/logout', protect, autenticacaoController.logout);
 router.post('/alterar-senha', protect, autenticacaoController.alterarSenha);
+router.post('/esqueci-senha', autenticacaoController.esqueciSenha);
+router.put(
+    '/recuperar-senha/:resettoken',
+    autenticacaoController.recuperarSenha
+);
 
 module.exports = router;

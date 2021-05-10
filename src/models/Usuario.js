@@ -68,6 +68,19 @@ UsuarioSchema.methods.matchPassword = async function (senhaEnviada) {
     return await bcrypt.compare(senhaEnviada, this.senha);
 };
 
+UsuarioSchema.methods.getResetToken = function () {
+    const resetTokenHash = crypto.randomBytes(20).toString('hex');
+
+    this.resetToken.hash = crypto
+        .createHash('sha256')
+        .update(resetTokenHash)
+        .digest('hex');
+
+    this.resetToken.validade = Date.now() + 10 * 60 * 1000;
+
+    return resetTokenHash;
+};
+
 const model = mongoose.model('Usuario', UsuarioSchema, 'usuarios');
 model.syncIndexes();
 

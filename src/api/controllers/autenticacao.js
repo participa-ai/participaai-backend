@@ -1,10 +1,12 @@
 const crypto = require('crypto');
+const StatusCodes = require('http-status-codes');
+
+const Usuario = require('../../models/Usuario');
+const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../../utils/helpers/errorResponse');
 const JsonResponse = require('../../utils/helpers/jsonResponse');
-const asyncHandler = require('../middleware/asyncHandler');
-const StatusCodes = require('http-status-codes');
-const Usuario = require('../../models/Usuario');
 const { validateCpf } = require('../../utils/helpers/userHelper');
+const { sendEmail } = require('../../utils/services/mailer');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
@@ -104,6 +106,72 @@ class AutenticacaoController {
         await usuario.save();
 
         this.clearTokenResponse(StatusCodes.OK, response);
+    });
+
+    esqueciSenha = asyncHandler(async (request, response, next) => {
+        const usuario = await Usuario.findOne({ email: request.body.email });
+
+        if (!usuario) {
+            return next(
+                new ErrorResponse(
+                    'Não existe usuário cadastrado para esse email.',
+                    StatusCodes.BAD_REQUEST
+                )
+            );
+        }
+
+        const resetToken = usuario.getResetToken();
+
+        await usuario.save({ validateBeforeSave: false });
+
+        const resetUrl = `${request.protocol}://${request.get(
+            'host'
+        )}/api/autenticacao/recuperar-senha/${resetToken}`;
+
+        const message = `Você está recebendo esse email porque você (ou alguém) solicitou uma recuperação de senha.\nSe não reconhecer essa ação, apenas ignore esse email.\nCaso tenha sido você, por favor acesse o link: \n\n ${resetUrl}`;
+
+        try {
+            await sendEmail({
+                email: usuario.email,
+                subject: 'Participa-aí! Solicitação de recuperação de senha',
+                message,
+            });
+
+            response
+                .status(StatusCodes.OK)
+                .json(new JsonResponse({ mensagem: 'Email enviado' }));
+        } catch (error) {
+            console.error(error);
+            usuario.resetToken = { hash: undefined, validade: undefined };
+
+            await usuario.save({ validateBeforeSave: false });
+
+            return next(new ErrorResponse('Falha ao enviar email', 500));
+        }
+    });
+
+    recuperarSenha = asyncHandler(async (request, response, next) => {
+        const hash = crypto
+            .createHash('sha256')
+            .update(request.params.resettoken)
+            .digest('hex');
+
+        const usuario = await Usuario.findOne({
+            'resetToken.hash': hash,
+            'resetToken.validade': { $gt: Date.now() },
+        });
+
+        if (!usuario) {
+            return next(
+                new ErrorResponse('Token inválido', StatusCodes.BAD_REQUEST)
+            );
+        }
+
+        usuario.senha = request.body.senha;
+        usuario.resetToken = { hash: undefined, validade: undefined };
+        await usuario.save();
+
+        this.sendTokenResponse(usuario, StatusCodes.OK, response);
     });
 
     sendTokenResponse = (usuario, statusCode, response) => {
