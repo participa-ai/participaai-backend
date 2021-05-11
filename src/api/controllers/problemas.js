@@ -55,17 +55,7 @@ class ProblemaController {
     });
 
     insert = asyncHandler(async (request, response, next) => {
-        request.body = JSON.parse(request.body.bodyJson);
         let problemaDto = getProblemaDtoForInsert(request);
-
-        if (request.file) {
-            const { nome, uri } = this.getFileInfo(request.file);
-
-            problemaDto.foto = {
-                nome,
-                uri,
-            };
-        }
 
         const problema = await Problema.create(problemaDto);
 
@@ -82,8 +72,6 @@ class ProblemaController {
                 )
             );
         }
-
-        // TODO : Se veio uma imagem, mudar a imagem
 
         const problemaDto = getProblemaDto(request);
 
@@ -113,6 +101,40 @@ class ProblemaController {
         await Problema.deleteById(request.params.id);
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
+    });
+
+    uploadFoto = asyncHandler(async (request, response, next) => {
+        let problema = await Problema.findById(request.params.id);
+        if (!problema) {
+            return next(
+                new ErrorResponse(
+                    'Problema não encontrada',
+                    StatusCodes.NOT_FOUND
+                )
+            );
+        }
+
+        let problemaDto = {};
+
+        if (request.file) {
+            const { nome, uri } = this.getFileInfo(request.file);
+
+            problemaDto.foto = {
+                nome,
+                uri,
+            };
+        }
+
+        problema = await Problema.findByIdAndUpdate(
+            request.params.id,
+            problemaDto,
+            {
+                new: true,
+                runValidators: true,
+            }
+        );
+
+        response.status(StatusCodes.OK).json(new JsonResponse(problema));
     });
 
     getFileInfo = (file) => {

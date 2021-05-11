@@ -17,12 +17,16 @@ router
         findFilter.filterByQuery(Problema, ['categoria', 'usuario']),
         problemasController.list
     )
-    .post(multer(multerConfig).single('foto'), problemasController.insert);
+    .post(problemasController.insert);
 
 router
     .route('/:id')
     .get(problemasController.get)
     .put(authorize('admin'), problemasController.update)
     .delete(authorize('admin'), problemasController.delete);
+
+router
+    .route('/:id/upload-foto')
+    .post(multer(multerConfig).single('foto'), problemasController.uploadFoto);
 
 module.exports = router;
