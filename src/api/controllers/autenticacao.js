@@ -122,13 +122,7 @@ class AutenticacaoController {
 
         const resetToken = usuario.getResetToken();
 
-        await usuario.save({ validateBeforeSave: false });
-
-        const resetUrl = `${request.protocol}://${request.get(
-            'host'
-        )}/api/autenticacao/recuperar-senha/${resetToken}`;
-
-        const message = `Você está recebendo esse email porque você (ou alguém) solicitou uma recuperação de senha.\nSe não reconhecer essa ação, apenas ignore esse email.\nCaso tenha sido você, por favor acesse o link: \n\n ${resetUrl}`;
+        const message = `Você está recebendo esse email porque você (ou alguém) solicitou uma recuperação de senha.\nSua nova senha para acesso é: \n\n ${resetToken}`;
 
         try {
             await sendEmail({
@@ -137,41 +131,16 @@ class AutenticacaoController {
                 message,
             });
 
+            await usuario.save({ validateBeforeSave: false });
+
             response
                 .status(StatusCodes.OK)
                 .json(new JsonResponse({ mensagem: 'Email enviado' }));
         } catch (error) {
             console.error(error);
-            usuario.resetToken = { hash: undefined, validade: undefined };
-
-            await usuario.save({ validateBeforeSave: false });
 
             return next(new ErrorResponse('Falha ao enviar email', 500));
         }
-    });
-
-    recuperarSenha = asyncHandler(async (request, response, next) => {
-        const hash = crypto
-            .createHash('sha256')
-            .update(request.params.resettoken)
-            .digest('hex');
-
-        const usuario = await Usuario.findOne({
-            'resetToken.hash': hash,
-            'resetToken.validade': { $gt: Date.now() },
-        });
-
-        if (!usuario) {
-            return next(
-                new ErrorResponse('Token inválido', StatusCodes.BAD_REQUEST)
-            );
-        }
-
-        usuario.senha = request.body.senha;
-        usuario.resetToken = { hash: undefined, validade: undefined };
-        await usuario.save();
-
-        this.sendTokenResponse(usuario, StatusCodes.OK, response);
     });
 
     sendTokenResponse = (usuario, statusCode, response) => {

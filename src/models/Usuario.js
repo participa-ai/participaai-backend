@@ -31,10 +31,6 @@ const UsuarioSchema = new mongoose.Schema({
         minlength: 6,
         select: false,
     },
-    resetToken: {
-        hash: String,
-        validade: Date,
-    },
     dataCriacao: {
         type: Date,
         default: Date.now,
@@ -69,14 +65,9 @@ UsuarioSchema.methods.matchPassword = async function (senhaEnviada) {
 };
 
 UsuarioSchema.methods.getResetToken = function () {
-    const resetTokenHash = crypto.randomBytes(20).toString('hex');
+    const resetTokenHash = crypto.randomBytes(8).toString('hex');
 
-    this.resetToken.hash = crypto
-        .createHash('sha256')
-        .update(resetTokenHash)
-        .digest('hex');
-
-    this.resetToken.validade = Date.now() + 10 * 60 * 1000;
+    this.senha = resetTokenHash;
 
     return resetTokenHash;
 };
