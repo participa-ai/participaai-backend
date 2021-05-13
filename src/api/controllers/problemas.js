@@ -22,6 +22,7 @@ class ProblemaController {
             });
 
             query = query.populate('categoria');
+            query = query.populate('usuario');
 
             const problemas = await query;
 
@@ -41,7 +42,11 @@ class ProblemaController {
     });
 
     get = asyncHandler(async (request, response, next) => {
-        const problema = await Problema.findById(request.params.id);
+        let query = Problema.findById(request.params.id);
+        query = query.populate('categoria');
+        query = query.populate('usuario');
+
+        const problema = await query;
         if (!problema) {
             return next(
                 new ErrorResponse(
