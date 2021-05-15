@@ -19,6 +19,8 @@ router
     )
     .post(problemasController.insert);
 
+router.post('/filtrar', authorize('admin'), problemasController.filtrar);
+
 router
     .route('/:id')
     .get(problemasController.get)

@@ -1,8 +1,12 @@
+const StatusCodes = require('http-status-codes');
+const parse = require('date-fns/parse');
+const endOfDay = require('date-fns/endOfDay');
+const startOfDay = require('date-fns/startOfDay');
+
 const Problema = require('../../models/Problema');
 const ErrorResponse = require('../../utils/helpers/errorResponse');
 const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
-const StatusCodes = require('http-status-codes');
 const {
     getProblemaDto,
     getProblemaDtoForInsert,
@@ -106,6 +110,36 @@ class ProblemaController {
         await Problema.deleteById(request.params.id);
 
         response.status(StatusCodes.OK).json(new JsonResponse({}));
+    });
+
+    filtrar = asyncHandler(async (request, response, next) => {
+        const filter = request.body;
+
+        if (filter.dataCriacao) {
+            try {
+                let dataFiltro = parse(
+                    filter.dataCriacao,
+                    'dd-MM-yyyy',
+                    new Date(1, 1, 1)
+                );
+                filter.dataCriacao = {
+                    $gte: startOfDay(dataFiltro),
+                    $lte: endOfDay(dataFiltro),
+                };
+            } catch (error) {
+                delete filter.dataCriacao;
+            }
+        }
+
+        let query = Problema.find({
+            ...filter,
+        });
+
+        const problemas = await query;
+
+        return response
+            .status(StatusCodes.OK)
+            .json(new JsonResponse(problemas));
     });
 
     uploadFoto = asyncHandler(async (request, response, next) => {

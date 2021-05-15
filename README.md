@@ -32,9 +32,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
-        GET 	/:id/problemas
         GET 	/eu/problemas
-        POST 	/:id/alterar-senha
 
     /categorias
         GET 	/
@@ -50,7 +48,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
-        POST 	/:id/resposta
+        POST 	/:id/upload-foto
 
     /dados-dashboard
         GET     /
