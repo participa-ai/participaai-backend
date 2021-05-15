@@ -45,5 +45,8 @@ exports.getProblemaDtoForInsert = (request) => {
     if (problema.status) delete problema.status;
     if (problema.resposta) delete problema.resposta;
 
+    if (problema.usuario) delete problema.usuario;
+    problema.usuario = request.usuario.id;
+
     return problema;
 };

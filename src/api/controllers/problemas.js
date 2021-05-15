@@ -155,7 +155,12 @@ class ProblemaController {
 
         let problemaDto = {};
 
-        if (request.file) {
+        if ((process.env.FILE_STORAGE_TYPE ?? 'debug') == 'debug') {
+            problemaDto.foto = {
+                nome: problema.id + '.jpg',
+                uri: `https://picsum.photos/seed/${problema.id}/500`,
+            };
+        } else if (request.file) {
             const { nome, uri } = this.getFileInfo(request.file);
 
             problemaDto.foto = {
