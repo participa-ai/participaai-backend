@@ -1,4 +1,4 @@
-const StatusCodes = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 const parse = require('date-fns/parse');
 const endOfDay = require('date-fns/endOfDay');
 const startOfDay = require('date-fns/startOfDay');
@@ -17,7 +17,7 @@ class ProblemaController {
         let usuarioId;
 
         if (request.params.usuarioId) usuarioId = request.params.usuarioId;
-        else if (request.baseUrl.includes('usuarios/eu'))
+        else if (request.originalUrl.includes('/meus-problemas'))
             usuarioId = request.usuario.id;
 
         if (usuarioId) {

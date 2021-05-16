@@ -32,7 +32,6 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
-        GET 	/eu/problemas
 
     /categorias
         GET 	/
@@ -40,6 +39,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
         PUT 	/:id
         DELETE 	/:id
         GET 	/:id
+        GET 	/meus-problemas/
 
     /problemas
         GET 	/

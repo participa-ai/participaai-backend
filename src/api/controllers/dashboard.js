@@ -1,6 +1,6 @@
 const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
-const StatusCodes = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 const Problema = require('../../models/Problema');
 
 class DashboardController {

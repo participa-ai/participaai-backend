@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const StatusCodes = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 
 const Usuario = require('../../models/Usuario');
 const asyncHandler = require('../middleware/asyncHandler');

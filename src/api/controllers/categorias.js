@@ -2,7 +2,7 @@ const Categoria = require('../../models/Categoria');
 const ErrorResponse = require('../../utils/helpers/errorResponse');
 const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
-const StatusCodes = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 const { getCategoriaDto } = require('../../utils/helpers/categoriaHelper');
 
 class CategoriaController {

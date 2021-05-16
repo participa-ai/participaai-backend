@@ -19,6 +19,8 @@ router
     )
     .post(problemasController.insert);
 
+router.route('/meus-problemas').get(problemasController.list);
+
 router.post('/filtrar', authorize('admin'), problemasController.filtrar);
 
 router

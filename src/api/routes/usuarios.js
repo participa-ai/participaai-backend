@@ -24,7 +24,6 @@ router
     .put(authorize('admin'), usuariosController.update)
     .delete(authorize('admin'), usuariosController.delete);
 
-router.use('/eu/problemas', problemasRouter);
 router.use('/:usuarioId/problemas', problemasRouter);
 
 module.exports = router;

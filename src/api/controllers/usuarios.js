@@ -2,7 +2,7 @@ const Usuario = require('../../models/Usuario');
 const JsonResponse = require('../../utils/helpers/jsonResponse');
 const ErrorResponse = require('../../utils/helpers/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
-const StatusCodes = require('http-status-codes');
+const { StatusCodes } = require('http-status-codes');
 const {
     getUsuarioDto,
     validateInsert,
