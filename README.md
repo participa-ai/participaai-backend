@@ -55,12 +55,12 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
 
 #### Response Convention
 
--   Sucess Tag
+-   Success Tag
 
     ```
     {
-        // Indica se a requisição foi executada com sucesso
-        "sucess": true,
+        // Indica se a requisição foi executada com successo
+        "success": true,
         ...
     }
     ```
@@ -123,7 +123,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/users?tipo=cidadao&select=nome&sort=nome&page=4&limit=2
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "list",
             "pagination": {
@@ -151,7 +151,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "list",
             "count": 10
@@ -175,7 +175,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios/1234
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "object"
         },
@@ -191,7 +191,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios/1236
     > 404 NOT FOUND
     {
-        "sucess": false,
+        "success": false,
         "metadata": {
             "type": "error"
         },
@@ -205,7 +205,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios/
     > 201 CREATED
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "object"
         },
@@ -222,7 +222,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios/1234
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "object"
         },
@@ -240,7 +240,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/usuarios/1234
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "object"
         },
@@ -254,7 +254,7 @@ Acesse a documentação: https://documenter.getpostman.com/view/15223886/TzCQaRr
     > /api/dados-dashboard
     > 200 OK
     {
-        "sucess": true,
+        "success": true,
         "metadata": {
             "type": "object"
         },

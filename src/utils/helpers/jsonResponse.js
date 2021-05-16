@@ -1,6 +1,6 @@
 class JsonResponse {
     constructor(data, pagination) {
-        this.sucess = true;
+        this.success = true;
         this.metadata = {};
         this.data = data;
 
