@@ -11,20 +11,20 @@ aws.config.update({
 });
 
 const storageTypes = {
-    // local: multer.diskStorage({
-    //     destination: (req, file, cb) => {
-    //         cb(null, path.resolve(__dirname, '..', 'public', 'uploads'));
-    //     },
-    //     filename: (req, file, cb) => {
-    //         crypto.randomBytes(16, (err, hash) => {
-    //             if (err) cb(err);
+    local: multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.resolve(__dirname, '..', 'public', 'uploads'));
+        },
+        filename: (req, file, cb) => {
+            crypto.randomBytes(16, (err, hash) => {
+                if (err) cb(err);
 
-    //             file.key = `${hash.toString('hex')}-${file.originalname}`;
+                file.key = `${hash.toString('hex')}-${file.originalname}`;
 
-    //             cb(null, file.key);
-    //         });
-    //     },
-    // }),
+                cb(null, file.key);
+            });
+        },
+    }),
     s3: multerS3({
         s3: new aws.S3(),
         bucket: process.env.AWS_S3_BUCKET,
@@ -47,7 +47,7 @@ module.exports = {
     dest: path.resolve(__dirname, '..', 'public', 'uploads'),
     storage: storageTypes[process.env.FILE_STORAGE_TYPE ?? 'debug'],
     limits: {
-        fileSize: 10 * 1024 * 1024,
+        fieldSize: 50 * 1024 * 1024,
     },
     fileFilter: (req, file, cb) => {
         const allowedMimes = [

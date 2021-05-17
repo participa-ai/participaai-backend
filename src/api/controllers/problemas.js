@@ -154,14 +154,8 @@ class ProblemaController {
         }
 
         let problemaDto = {};
-
-        if ((process.env.FILE_STORAGE_TYPE ?? 'debug') == 'debug') {
-            problemaDto.foto = {
-                nome: problema.id + '.jpg',
-                uri: `https://picsum.photos/seed/${problema.id}/500`,
-            };
-        } else if (request.file) {
-            const { nome, uri } = this.getFileInfo(request.file);
+        if (request.file || process.env.FILE_STORAGE_TYPE === 'debug') {
+            const { nome, uri } = this.getFileInfo(request.file, problema);
 
             problemaDto.foto = {
                 nome,
@@ -181,14 +175,19 @@ class ProblemaController {
         response.status(StatusCodes.OK).json(new JsonResponse(problema));
     });
 
-    getFileInfo = (file) => {
-        const storageType = process.env.FILE_STORAGE_TYPE ?? 'local';
+    getFileInfo = (file, problema) => {
+        const storageType = process.env.FILE_STORAGE_TYPE ?? 'debug';
         let fileInfo = { nome: '', uri: '' };
 
-        if (storageType === 'local') {
-            fileInfo.nome = file.filename;
-            fileInfo.uri = file.destination;
+        if (storageType === 'debug' || storageType === 'local') {
+            fileInfo.nome = problema.id + '.jpg';
+            fileInfo.uri = `https://picsum.photos/seed/${problema.id}/500`;
         }
+
+        // if (storageType === 'local') {
+        //     fileInfo.nome = file.filename;
+        //     fileInfo.uri = file.destination;
+        // }
 
         if (storageType === 's3') {
             fileInfo.nome = file.originalname;

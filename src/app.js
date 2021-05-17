@@ -18,8 +18,8 @@ const limiter = rateLimit({
 });
 
 const app = express()
-    .use(express.json())
-    .use(express.urlencoded({ extended: true }))
+    .use(express.json({ limit: '50mb' }))
+    .use(express.urlencoded({ extended: true, limit: '50mb' }))
     .use(cors())
     .use(cookieParser())
     .use(mongoSanitize())
