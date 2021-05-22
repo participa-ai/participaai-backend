@@ -21,6 +21,7 @@ const ProblemaSchema = new mongoose.Schema({
         type: {
             type: String,
             enum: ['Point'],
+            default: 'Point',
         },
         coordinates: {
             type: [Number],
@@ -45,6 +46,10 @@ const ProblemaSchema = new mongoose.Schema({
         },
     },
     dataCriacao: {
+        type: Date,
+        default: Date.now,
+    },
+    dataAtualizacao: {
         type: Date,
         default: Date.now,
     },

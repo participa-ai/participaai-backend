@@ -25,6 +25,8 @@ class ProblemaController {
                 usuario: usuarioId,
             });
 
+            query.sort({ dataAtualizacao: 'desc' });
+
             query = query.populate('categoria');
             query = query.populate('usuario');
 
@@ -83,6 +85,7 @@ class ProblemaController {
         }
 
         const problemaDto = getProblemaDto(request);
+        problemaDto.dataAtualizacao = Date.now();
 
         problema = await Problema.findByIdAndUpdate(
             request.params.id,
