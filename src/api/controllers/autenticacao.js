@@ -6,11 +6,16 @@ const asyncHandler = require('../middleware/asyncHandler');
 const ErrorResponse = require('../../utils/helpers/errorResponse');
 const JsonResponse = require('../../utils/helpers/jsonResponse');
 const { validateCpf } = require('../../utils/helpers/userHelper');
+const {
+    getLoginDto,
+    getCadastroDto,
+} = require('../../utils/helpers/authHelper');
 const { sendEmail } = require('../../utils/services/mailer');
 
 class AutenticacaoController {
     cadastro = asyncHandler(async (request, response, next) => {
-        const { nome, email, cpf, senha } = request.body;
+        const cadastroDto = getCadastroDto(request);
+        const { nome, email, cpf, senha } = cadastroDto;
         const tipo = 'cidadao';
 
         if (!validateCpf(cpf)) {
@@ -34,7 +39,8 @@ class AutenticacaoController {
     });
 
     login = asyncHandler(async (request, response, next) => {
-        const { cpf, matricula, senha } = request.body;
+        const loginDto = getLoginDto(request);
+        const { cpf, matricula, senha } = loginDto;
 
         if ((cpf && matricula) || !(cpf || matricula) || !senha) {
             return next(
