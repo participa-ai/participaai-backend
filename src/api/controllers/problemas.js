@@ -27,8 +27,14 @@ class ProblemaController {
 
             query.sort({ dataAtualizacao: 'desc' });
 
-            query = query.populate('categoria');
-            query = query.populate('usuario');
+            query = query.populate({
+                path: 'categoria',
+                options: { withDeleted: true },
+            });
+            query = query.populate({
+                path: 'usuario',
+                options: { withDeleted: true },
+            });
 
             const problemas = await query;
 
@@ -49,8 +55,14 @@ class ProblemaController {
 
     get = asyncHandler(async (request, response, next) => {
         let query = Problema.findById(request.params.id);
-        query = query.populate('categoria');
-        query = query.populate('usuario');
+        query = query.populate({
+            path: 'categoria',
+            options: { withDeleted: true },
+        });
+        query = query.populate({
+            path: 'usuario',
+            options: { withDeleted: true },
+        });
 
         const problema = await query;
         if (!problema) {
@@ -68,7 +80,17 @@ class ProblemaController {
     insert = asyncHandler(async (request, response, next) => {
         let problemaDto = getProblemaDtoForInsert(request);
 
-        const problema = await Problema.create(problemaDto);
+        let problema = await Problema.create(problemaDto);
+        problema = await problema
+            .populate({
+                path: 'categoria',
+                options: { withDeleted: true },
+            })
+            .populate({
+                path: 'usuario',
+                options: { withDeleted: true },
+            })
+            .execPopulate();
 
         response.status(StatusCodes.CREATED).json(new JsonResponse(problema));
     });
@@ -87,14 +109,22 @@ class ProblemaController {
         const problemaDto = getProblemaDto(request);
         problemaDto.dataAtualizacao = Date.now();
 
-        problema = await Problema.findByIdAndUpdate(
-            request.params.id,
-            problemaDto,
-            {
-                new: true,
-                runValidators: true,
-            }
-        );
+        let query = Problema.findByIdAndUpdate(request.params.id, problemaDto, {
+            new: true,
+            runValidators: true,
+        });
+
+        query = query.populate({
+            path: 'categoria',
+            options: { withDeleted: true },
+        });
+
+        query = query.populate({
+            path: 'usuario',
+            options: { withDeleted: true },
+        });
+
+        problema = await query;
 
         response.status(StatusCodes.OK).json(new JsonResponse(problema));
     });
@@ -136,6 +166,16 @@ class ProblemaController {
 
         let query = Problema.find({
             ...filter,
+        });
+
+        query = query.populate({
+            path: 'categoria',
+            options: { withDeleted: true },
+        });
+
+        query = query.populate({
+            path: 'usuario',
+            options: { withDeleted: true },
         });
 
         const problemas = await query;
