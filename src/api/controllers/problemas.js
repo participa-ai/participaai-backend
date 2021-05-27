@@ -148,6 +148,12 @@ class ProblemaController {
     filtrar = asyncHandler(async (request, response, next) => {
         const filter = request.body;
 
+        for (var propName in filter) {
+            if (!filter[propName]) {
+                delete filter[propName];
+            }
+        }
+
         if (filter.dataCriacao) {
             try {
                 let dataFiltro = parse(
