@@ -8,18 +8,24 @@ const UsuarioSchema = new mongoose.Schema({
     nome: {
         type: String,
         required: [true, 'Nome é obrigatório'],
+        trim: true,
     },
     email: {
         type: String,
         required: [true, 'Email é obrigatório'],
         unique: true,
+        lowercase: true,
+        trim: true,
         match: [
             /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
             'Email inválido',
         ],
     },
     cpf: String,
-    matricula: String,
+    matricula: {
+        type: String,
+        trim: true,
+    },
     tipo: {
         type: String,
         enum: ['admin', 'cidadao'],
@@ -65,7 +71,7 @@ UsuarioSchema.methods.matchPassword = async function (senhaEnviada) {
 };
 
 UsuarioSchema.methods.getResetToken = function () {
-    const resetTokenHash = crypto.randomBytes(8).toString('hex');
+    const resetTokenHash = crypto.randomBytes(4).toString('hex').toLowerCase();
 
     this.senha = resetTokenHash;
 

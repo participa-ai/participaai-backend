@@ -115,7 +115,9 @@ class AutenticacaoController {
     });
 
     esqueciSenha = asyncHandler(async (request, response, next) => {
-        const usuario = await Usuario.findOne({ email: request.body.email });
+        const usuario = await Usuario.findOne({
+            email: request?.body?.email?.toLowerCase(),
+        });
 
         if (!usuario) {
             return next(
@@ -128,7 +130,7 @@ class AutenticacaoController {
 
         const resetToken = usuario.getResetToken();
 
-        const message = `Você está recebendo esse email porque você (ou alguém) solicitou uma recuperação de senha.\nSua nova senha para acesso é: \n\n ${resetToken}`;
+        const message = `Você está recebendo esse email porque você (ou alguém) solicitou uma recuperação de senha.\nSua nova senha para acesso é: ${resetToken}`;
 
         try {
             await sendEmail({

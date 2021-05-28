@@ -50,7 +50,7 @@ exports.getUsuarioDto = (request) => {
     let usuario = {};
 
     if (nome) usuario.nome = nome;
-    if (email) usuario.email = email;
+    if (email) usuario.email = email?.toLowerCase();
     if (senha) usuario.senha = senha;
     if (tipo) usuario.tipo = tipo;
 
