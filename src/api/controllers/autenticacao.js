@@ -35,6 +35,8 @@ class AutenticacaoController {
             tipo,
         });
 
+        usuario.senha = undefined;
+
         this.sendTokenResponse(usuario, StatusCodes.OK, response);
     });
 
@@ -77,6 +79,8 @@ class AutenticacaoController {
                 )
             );
         }
+
+        usuario.senha = undefined;
 
         this.sendTokenResponse(usuario, StatusCodes.OK, response);
     });
@@ -165,7 +169,7 @@ class AutenticacaoController {
         response
             .status(statusCode)
             // .cookie('token', token, options)
-            .json(new JsonResponse({ token }));
+            .json(new JsonResponse({ token, usuario }));
     };
 
     clearTokenResponse = (statusCode, response) => {
@@ -179,7 +183,7 @@ class AutenticacaoController {
         response
             .status(statusCode)
             .cookie('token', token, options)
-            .json(new JsonResponse({ token }));
+            .json(new JsonResponse({ token, usuario: {} }));
     };
 }
 
