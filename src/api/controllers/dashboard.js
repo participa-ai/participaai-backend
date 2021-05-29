@@ -21,7 +21,7 @@ class DashboardController {
     };
 
     getCountSolvedProblems = async () => {
-        const count = await Problema.countDocuments({ tipo: 'finalizado' });
+        const count = await Problema.countDocuments({ status: 'finalizado' });
         return count;
     };
 
@@ -42,6 +42,9 @@ class DashboardController {
                     quantidade: { $sum: 1 },
                 },
             },
+            {
+                $sort: { _id: 1 },
+            },
         ];
 
         const count = await Problema.aggregate(aggregate);
@@ -54,12 +57,15 @@ class DashboardController {
                 $group: {
                     _id: {
                         $dateToString: {
-                            format: '%Y-%m-%d',
+                            format: '%d/%m/%Y',
                             date: '$dataCriacao',
                         },
                     },
                     quantidade: { $sum: 1 },
                 },
+            },
+            {
+                $sort: { _id: 1 },
             },
         ];
 
