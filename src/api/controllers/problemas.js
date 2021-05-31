@@ -109,6 +109,14 @@ class ProblemaController {
         const problemaDto = getProblemaDto(request);
         problemaDto.dataAtualizacao = Date.now();
 
+        if (
+            problema?.resposta?.descricao !==
+                problemaDto?.resposta?.descricao &&
+            !problema?.resposta?.data
+        ) {
+            problemaDto.resposta.data = Date.now();
+        }
+
         let query = Problema.findByIdAndUpdate(request.params.id, problemaDto, {
             new: true,
             runValidators: true,
