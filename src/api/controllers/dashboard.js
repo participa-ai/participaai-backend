@@ -2,6 +2,7 @@ const JsonResponse = require('../../utils/helpers/jsonResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const { StatusCodes } = require('http-status-codes');
 const Problema = require('../../models/Problema');
+var parse = require('date-fns/parse');
 
 class DashboardController {
     get = asyncHandler(async (request, response, next) => {
@@ -54,18 +55,39 @@ class DashboardController {
     getCountProblemsByDate = async () => {
         const aggregate = [
             {
+                $match: {
+                    dataCriacao: {
+                        $gt: new Date(
+                            new Date().getTime() - 30 * 24 * 60 * 60 * 1000
+                        ),
+                    },
+                },
+            },
+            {
                 $group: {
                     _id: {
                         $dateToString: {
                             format: '%d/%m/%Y',
                             date: '$dataCriacao',
+                            timezone: process.env.TZ || 'America/Sao_Paulo',
                         },
                     },
                     quantidade: { $sum: 1 },
                 },
             },
             {
-                $sort: { _id: 1 },
+                $addFields: {
+                    date: {
+                        $dateFromString: {
+                            dateString: '$_id',
+                            format: '%d/%m/%Y',
+                            timezone: process.env.TZ || 'America/Sao_Paulo',
+                        },
+                    },
+                },
+            },
+            {
+                $sort: { date: 1 },
             },
         ];
 
