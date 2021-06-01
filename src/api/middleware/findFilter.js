@@ -36,7 +36,7 @@ class FindFilter {
                 const sortBy = request.query.sort.split(',').join(' ');
                 query = query.sort(sortBy);
             } else {
-                query = query.sort('-createdAt');
+                query = query.sort('-dataCriacao');
             }
 
             // Pagination

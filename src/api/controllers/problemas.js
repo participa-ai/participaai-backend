@@ -192,6 +192,10 @@ class ProblemaController {
             options: { withDeleted: true },
         });
 
+        query = query.sort({
+            dataCriacao: -1,
+        });
+
         const problemas = await query;
 
         return response
